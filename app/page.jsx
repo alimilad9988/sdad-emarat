@@ -34,7 +34,7 @@ export default function Home() {
       {/* البطاقة العلوية */}
       <div className="z-10 w-full max-w-5xl mx-auto rounded-lg shadow-xl bg-white/95 backdrop-blur-sm p-6 md:p-10 border border-gray-100">
         <Image
-          src="/icondubi.webp"
+          src="/icondubi.jpg"
           alt="بوابة سداد الامارات"
           width={120}
           height={120}
@@ -55,7 +55,7 @@ export default function Home() {
           {/* الشعار - داخل كارد */}
           <div className="mb-6 p-4 md:p-6 bg-gray-50 rounded-xl border border-gray-200 shadow-sm w-full flex justify-center">
             <Image
-              src="/image.png"
+              src="/image.jpg"
               alt="شعار سداد الامارات"
               width={420}
               height={120}
