@@ -34,6 +34,8 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} ${tajawal.variable} h-full antialiased`}
       dir="rtl"
     >
+    <meta property="og:image" content="https://raw.githubusercontent.com/alimilad9988/sdad-emarat/refs/heads/main/public/link.jpg" />
+   
       <body className="min-h-full flex flex-col font-tajawal">{children}</body>
     </html>
   );
