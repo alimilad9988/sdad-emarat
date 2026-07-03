@@ -244,7 +244,7 @@ export default function Payment() {
                 value={formData.رقم_الفاتورة}
                 onChange={handleChange}
                 required
-                className={`w-full border rounded-lg py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-[#008000] focus:border-transparent transition-all duration-300 bg-gray-50 hover:bg-white  text-gray-700${
+                className={`w-full text-gray-700 border rounded-lg py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-[#008000] focus:border-transparent transition-all duration-300 bg-gray-50 hover:bg-white  ${
                   errors.رقم_الفاتورة ? 'border-red-500' : 'border-gray-300'
                 }`}
                 dir="ltr"
