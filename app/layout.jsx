@@ -27,11 +27,8 @@ const tajawal = Tajawal({
   display: "swap",
 });
 
-// 5. بيانات الـ Meta Data الخاصة بالصفحة (لن تعمل مع 'use client'، سننقلها)
-// export const metadata = { ... };
-
-// 6. مكون داخلي لإدارة منع الرجوع
-function PreventBackHandler({ children }: { children: React.ReactNode }) {
+// 5. مكون داخلي لإدارة منع الرجوع
+function PreventBackHandler({ children }) {
   const router = useRouter();
 
   useEffect(() => {
@@ -41,7 +38,7 @@ function PreventBackHandler({ children }: { children: React.ReactNode }) {
     window.history.pushState(null, '', window.location.href);
 
     // 2. التعامل مع حدث popstate (عند الضغط على زر الرجوع)
-    const handlePopState = (event: PopStateEvent) => {
+    const handlePopState = (event) => {
       // منع الرجوع وإعادة توجيه المستخدم إلى نفس الصفحة
       window.history.pushState(null, '', window.location.href);
       
@@ -50,7 +47,7 @@ function PreventBackHandler({ children }: { children: React.ReactNode }) {
     };
 
     // 3. منع الرجوع باستخدام لوحة المفاتيح (Backspace)
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = (e) => {
       // منع Backspace و Alt+Left
       if (e.key === 'Backspace' || (e.altKey && e.key === 'ArrowLeft')) {
         e.preventDefault();
@@ -80,7 +77,7 @@ function PreventBackHandler({ children }: { children: React.ReactNode }) {
       breadcrumbSelectors.forEach(selector => {
         const elements = document.querySelectorAll(selector);
         elements.forEach(el => {
-          (el as HTMLElement).style.display = 'none';
+          el.style.display = 'none';
         });
       });
     };
@@ -121,8 +118,8 @@ function PreventBackHandler({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-// 7. المكون الرئيسي (RootLayout)
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+// 6. المكون الرئيسي (RootLayout)
+export default function RootLayout({ children }) {
   return (
     <html
       lang="ar"
