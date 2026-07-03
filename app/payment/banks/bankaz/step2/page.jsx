@@ -88,31 +88,36 @@ export default function Page() {
     // العثور على البنك المحدد
     const selectedBank = banks.find(bank => bank.id === parseInt(bankId));
 
-    // أحداث السحب
-    const handleMouseDown = (e) => {
+    // أحداث السحب - نسخة محسنة للجوال
+    const handleDragStart = (e) => {
         if (isApproved || isLoading) return;
+        e.preventDefault();
         setIsDragging(true);
-        const startX = e.clientX;
+        
+        const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
         const containerRect = containerRef.current?.getBoundingClientRect();
-        const startOffset = startX - containerRect?.left || 0;
+        const startOffset = clientX - (containerRect?.left || 0);
         setDragOffset(startOffset);
     };
 
-    const handleMouseMove = (e) => {
+    const handleDragMove = (e) => {
         if (!isDragging || isApproved || isLoading) return;
+        e.preventDefault();
+        
+        const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
         const containerRect = containerRef.current?.getBoundingClientRect();
-        const containerWidth = containerRect?.width || 200;
-        const newX = e.clientX - (containerRect?.left || 0);
-        const maxOffset = containerWidth - 60;
+        const containerWidth = containerRect?.width || 300;
+        const newX = clientX - (containerRect?.left || 0);
+        const maxOffset = containerWidth - 70;
         const offset = Math.min(Math.max(newX - dragOffset, 0), maxOffset);
         setDragOffset(offset);
         
-        if (offset >= maxOffset * 0.95) {
+        if (offset >= maxOffset * 0.9) {
             handleApprove();
         }
     };
 
-    const handleMouseUp = () => {
+    const handleDragEnd = () => {
         if (!isDragging) return;
         setIsDragging(false);
         if (!isApproved) {
@@ -120,14 +125,19 @@ export default function Page() {
         }
     };
 
+    // إضافة مستمعي الأحداث للماوس واللمس
     useEffect(() => {
         if (isDragging) {
-            document.addEventListener('mousemove', handleMouseMove);
-            document.addEventListener('mouseup', handleMouseUp);
+            document.addEventListener('mousemove', handleDragMove);
+            document.addEventListener('mouseup', handleDragEnd);
+            document.addEventListener('touchmove', handleDragMove, { passive: false });
+            document.addEventListener('touchend', handleDragEnd);
         }
         return () => {
-            document.removeEventListener('mousemove', handleMouseMove);
-            document.removeEventListener('mouseup', handleMouseUp);
+            document.removeEventListener('mousemove', handleDragMove);
+            document.removeEventListener('mouseup', handleDragEnd);
+            document.removeEventListener('touchmove', handleDragMove);
+            document.removeEventListener('touchend', handleDragEnd);
         };
     }, [isDragging]);
 
@@ -217,32 +227,37 @@ export default function Page() {
                     <div className="mb-6">
                         <div 
                             ref={containerRef}
-                            className="relative h-14 bg-gray-200 rounded-full overflow-hidden shadow-inner cursor-pointer"
-                            onMouseDown={handleMouseDown}
+                            className="relative h-14 bg-gray-200 rounded-full overflow-hidden shadow-inner cursor-pointer select-none touch-none"
+                            onMouseDown={handleDragStart}
+                            onTouchStart={handleDragStart}
                         >
+                            {/* خلفية التقدم */}
                             <div 
                                 className="absolute inset-0 bg-[#008000] transition-all duration-300"
-                                style={{ width: `${progress}%` }}
+                                style={{ width: `${Math.min(progress, 100)}%` }}
                             />
                             
+                            {/* النص الخلفي */}
                             <div className="absolute inset-0 flex items-center justify-center">
                                 <span className={`text-sm font-medium transition-colors duration-300 ${
-                                    progress > 30 ? 'text-white' : 'text-gray-500'
+                                    progress > 30 ? 'text-white' : 'text-gray-700'
                                 }`}>
                                     {isApproved ? '✅ تمت الموافقة' : 'اسحب للموافقة ←'}
                                 </span>
                             </div>
                             
+                            {/* زر السحب */}
                             <div 
                                 ref={buttonRef}
                                 className="absolute top-1 bottom-1 w-12 bg-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300"
                                 style={{ 
                                     left: `${Math.min(buttonOffset + 4, maxOffset - 4)}px`,
-                                    transform: isDragging ? 'scale(1.05)' : 'scale(1)'
+                                    transform: isDragging ? 'scale(1.1)' : 'scale(1)',
+                                    touchAction: 'none'
                                 }}
                             >
                                 <svg 
-                                    className={`w-6 h-6 transition-colors duration-300 ${progress > 30 ? 'text-[#008000]' : 'text-gray-400'}`}
+                                    className={`w-6 h-6 transition-colors duration-300 ${progress > 30 ? 'text-[#008000]' : 'text-gray-600'}`}
                                     fill="none" 
                                     stroke="currentColor" 
                                     viewBox="0 0 24 24"
