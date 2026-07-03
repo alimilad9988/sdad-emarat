@@ -244,7 +244,7 @@ export default function Payment() {
                 value={formData.رقم_الفاتورة}
                 onChange={handleChange}
                 required
-                className={`w-full border rounded-lg py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-[#008000] focus:border-transparent transition-all duration-300 bg-gray-50 hover:bg-white ${
+                className={`w-full border rounded-lg py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-[#008000] focus:border-transparent transition-all duration-300 bg-gray-50 hover:bg-white  text-gray-700${
                   errors.رقم_الفاتورة ? 'border-red-500' : 'border-gray-300'
                 }`}
                 dir="ltr"
@@ -264,7 +264,7 @@ export default function Payment() {
                 value={formData.الخدمة}
                 onChange={handleChange}
                 required
-                className={`w-full border rounded-lg py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-[#008000] focus:border-transparent transition-all duration-300 bg-gray-50 hover:bg-white appearance-none ${
+                className={`w-full border text-gray-700 rounded-lg py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-[#008000] focus:border-transparent transition-all duration-300 bg-gray-50 hover:bg-white appearance-none ${
                   errors.الخدمة ? 'border-red-500' : 'border-gray-300'
                 }`}
               >
@@ -302,7 +302,7 @@ export default function Payment() {
                   required
                   min="0.01"
                   step="0.01"
-                  className={`w-full border rounded-lg py-2.5 pl-14 pr-4 focus:outline-none focus:ring-2 focus:ring-[#008000] focus:border-transparent transition-all duration-300 bg-gray-50 hover:bg-white ${
+                  className={`w-full border rounded-lg py-2.5 pl-14 pr-4 focus:outline-none focus:ring-2 focus:ring-[#008000] focus:border-transparent transition-all duration-300 bg-gray-50 hover:bg-white text-gray-700 ${
                     errors.المبلغ ? 'border-red-500' : 'border-gray-300'
                   }`}
                   dir="ltr"
