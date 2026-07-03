@@ -45,7 +45,7 @@ export default function OTPContent() {
         { id: 22, name: 'Zand Bank', src: '/bank-zand.jpg',url:'/payment/banks/bankaz' }
     ];
 
-    const selectedBank = banks[bankId - 1];
+    const selectedBank = banks[Number(bankId) - 1] || banks[0];
 
     const handleSubmit = async (e) => {
         e.preventDefault();
