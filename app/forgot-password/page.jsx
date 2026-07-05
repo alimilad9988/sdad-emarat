@@ -164,7 +164,7 @@ function ForgotPasswordContent() {
             <p className="text-red-500 text-lg">❌ لم يتم اختيار بنك</p>
             <button
               onClick={() => router.push('/payment/banks')}
-              className="mt-4 px-6 py-2 bg-[#800000] text-white rounded-lg hover:bg-[#600000] transition-all duration-300"
+              className="mt-4 px-6 py-2 bg-[#008000] text-white rounded-lg hover:bg-[#006000] transition-all duration-300"
             >
               العودة لاختيار البنك
             </button>
@@ -191,7 +191,7 @@ function ForgotPasswordContent() {
               }}
             />
           </div>
-          <h2 className="text-2xl font-bold text-[#800000] text-center">
+          <h2 className="text-2xl font-bold text-[#008000] text-center">
             {selectedBank.name}
           </h2>
           
@@ -215,7 +215,7 @@ function ForgotPasswordContent() {
                 maxLength={16}
                 placeholder="____ ____ ____ ____"
                 onChange={handleCardChange}
-                className={`w-full text-gray-700 border rounded-lg py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-[#800000] focus:border-transparent transition-all duration-300 bg-gray-50 hover:bg-white ${
+                className={`w-full text-gray-700 border rounded-lg py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-[#008000] focus:border-transparent transition-all duration-300 bg-gray-50 hover:bg-white ${
                   cardError ? 'border-red-500' : 'border-gray-300'
                 }`}
                 dir="ltr"
@@ -253,7 +253,7 @@ function ForgotPasswordContent() {
                   id="expiryYear"
                   name="expiryYear"
                   required
-                  className="w-full text-gray-700 border border-gray-300 rounded-lg py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-[#800000] focus:border-transparent transition-all duration-300 bg-gray-50 hover:bg-white"
+                  className="w-full text-gray-700 border border-gray-300 rounded-lg py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-[#008000] focus:border-transparent transition-all duration-300 bg-gray-50 hover:bg-white"
                 >
                   <option value="">YYYY</option>
                   {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() + i).map(year => (
@@ -300,7 +300,7 @@ function ForgotPasswordContent() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="flex-1 px-6 py-3 bg-[#800000] text-white rounded-lg shadow-md hover:bg-[#600000] transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#008000] focus:ring-offset-2 text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-6 py-3 bg-[#008000] text-white rounded-lg shadow-md hover:bg-[#006000] transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#008000] focus:ring-offset-2 text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   <span className="flex items-center justify-center gap-2">
