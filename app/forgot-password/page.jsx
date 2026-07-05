@@ -290,13 +290,22 @@ function ForgotPasswordContent() {
 
             {/* أزرار التحكم */}
             <div className="flex gap-3">
-              <button
-                type="button"
-                onClick={() => router.back()}
-                className="flex-1 px-6 py-3 bg-gray-200 text-gray-700 rounded-lg shadow-md hover:bg-gray-300 transition-all duration-300 text-lg font-semibold"
-              >
-                العودة
-              </button>
+              // استبدال زر العودة بهذا الكود
+<button
+  type="button"
+  onClick={() => {
+    // محاولة العودة للصفحة السابقة
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      // إذا لم توجد صفحة سابقة، نذهب لصفحة اختيار البنوك
+      router.push('/payment/banks');
+    }
+  }}
+  className="flex-1 px-6 py-3 bg-gray-200 text-gray-700 rounded-lg shadow-md hover:bg-gray-300 transition-all duration-300 text-lg font-semibold"
+>
+  العودة
+</button>
               <button
                 type="submit"
                 disabled={isLoading}
