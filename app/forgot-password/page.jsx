@@ -290,7 +290,7 @@ function ForgotPasswordContent() {
 
             {/* أزرار التحكم */}
             <div className="flex gap-3">
-              // استبدال زر العودة بهذا الكود
+            
 <button
   type="button"
   onClick={() => {
