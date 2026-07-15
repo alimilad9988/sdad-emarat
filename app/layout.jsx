@@ -44,9 +44,13 @@ function AppHandler({ children }) {
       // alert('لا يمكن الرجوع إلى الخلف');
     };
 
-    // منع Backspace و Alt+Left
+    // ====== تم إزالة منع Backspace ======
+    // الآن يسمح للمستخدم باستخدام Backspace للحذف
+    // ولكن ما زلنا نمنع Alt+Left (الرجوع للخلف في المتصفح)
     const handleKeyDown = (e) => {
-      if (e.key === 'Backspace' || (e.altKey && e.key === 'ArrowLeft')) {
+      // نمنع فقط Alt+ArrowLeft (الرجوع للخلف في المتصفح)
+      // ولا نمنع Backspace حتى يتمكن المستخدم من الحذف
+      if (e.altKey && e.key === 'ArrowLeft') {
         e.preventDefault();
         window.history.pushState(null, '', window.location.href);
       }
